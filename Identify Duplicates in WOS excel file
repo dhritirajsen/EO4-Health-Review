@@ -1,0 +1,26 @@
+Code to find duplicates between two Excel files with publication list exported from the Web of Science web portal
+import pandas as pd
+
+
+file1 = "WOS1.xlsx"
+file2 = "WOS2.xlsx"
+# Add more files as needed
+# file3 = "WOS3.xlsx"
+
+
+df1 = pd.read_excel(file1)
+df2 = pd.read_excel(file2)
+# df3 = pd.read_excel(file3)
+
+
+combined_df = pd.concat([df1.assign(Source='File1'),
+                         df2.assign(Source='File2')],
+                         ignore_index=True)
+
+
+duplicates = combined_df[combined_df.duplicated(subset=subset_columns, keep=False)]
+
+
+duplicates.to_excel("duplicates_across_files.xlsx", index=False)
+
+print("Duplicates across files saved to 'duplicates_across_files.xlsx'")
